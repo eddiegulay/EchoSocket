@@ -13,6 +13,9 @@ Welcome to EchoSocket, a project that facilitates two-way communication between 
     - [Installation](#installation)
   - [Usage](#usage)
   - [Project Structure](#project-structure)
+  - [EchoSocket: Master-Slave Connection](#echosocket-master-slave-connection)
+  - [Interacting with the System](#interacting-with-the-system)
+    - [Notes](#notes)
   - [Contributing](#contributing)
   - [License](#license)
 
@@ -74,6 +77,61 @@ EchoSocket/
 - **src:** Contains more advanced scripts for handling multiple clients.
 - **master.py:** Where the server script is located.
 - **slave.py:** Where the client script is located.
+
+---
+Certainly! Here's a simple README for creating connections between a master server and slave clients using the `EchoSocket` class in `multi_clients.py`:
+
+---
+
+## EchoSocket: Master-Slave Connection
+
+1. **Run the Master Server:**
+
+    - Open `master.py` and customize the following variables:
+
+        ```python
+        SERVER_IP = "127.0.0.1"  # Set the server IP address
+        SERVER_PORT = 8080       # Set the server port
+        SERVER_NAME = "MasterServer"  # Set the server name
+        ```
+
+    - Run the master server:
+
+        ```bash
+        python master.py
+        ```
+
+2. **Run the Slave Client:**
+
+    - Open `slave.py` and customize the following variables:
+
+        ```python
+        SERVER_IP = "127.0.0.1"  # Set the server IP address
+        SERVER_PORT = 8080       # Set the server port
+        SERVER_NAME = "MasterServer"  # Set the server name (should match the master)
+        ```
+
+    - Run the slave client:
+
+        ```bash
+        python slave.py
+        ```
+
+## Interacting with the System
+
+- Once the master server and slave clients are running, the master server will accept incoming connections from slaves.
+
+- Slave clients can send messages to the master server, and the server will respond by echoing the received messages.
+
+- To gracefully exit the system, type `'exit'` as a message in a slave client.
+
+### Notes
+
+- The master and slave instances of `EchoSocket` are designed to be flexible, allowing for easy customization of server IP, port, and name.
+
+- The system uses a simple echo mechanism where the server responds with an echo of the received message.
+
+---
 
 ## Contributing
 

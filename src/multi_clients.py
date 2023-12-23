@@ -1,6 +1,7 @@
 import socket
 import select
 import threading
+import time
 
 class EchoSocket:
     def __init__(self, server_address, server_port, server_name, for_clients=False):
@@ -38,19 +39,22 @@ class EchoSocket:
                 else:
                     # Handle data from a client
                     try:
-                        data = sock.recv(1024).decode('utf-8')
+                        data = sock.recv(1024)
                         if not data:
                             self.handle_disconnect(sock)
+                        elif data.lower() == b'exit':
+                            self.handle_disconnect(sock)
+                        elif data.lower() == b'file':
+                            # If the client wants to send a file
+                            file_name = sock.recv(1024).decode('utf-8')
+                            self.receive_file(sock)
                         else:
-                            print(f"Received from client {sock.getpeername()}: {data}")
+                            decoded_data = data.decode('utf-8')
+                            print(f"Received from client {sock.getpeername()}: {decoded_data}")
 
                             # Send a response back to the client
-                            response = f"{self.server_name} received: {data}"
+                            response = f"{self.server_name} received: {decoded_data}"
                             sock.send(response.encode('utf-8'))
-
-                            # Check for the exit message
-                            if data.lower() == 'exit':
-                                self.handle_disconnect(sock)
                     except Exception as e:
                         print(f"Error handling client {sock.getpeername()}: {e}")
                         self.handle_disconnect(sock)
@@ -149,3 +153,46 @@ class EchoSocket:
         except Exception as e:
             print(f"Error closing server socket: {e}")
 
+    ## file handling
+    def send_file(self, client_socket, file_name):
+        try:
+            # Send a command indicating that a file is being sent
+            client_socket.send(b'file')
+
+            # Wait for a short duration to allow the client to process the command
+            time.sleep(0.1)
+
+            # Send the file name
+            client_socket.send(file_name.encode('utf-8'))
+
+            # Now send the file content
+            with open(file_name, 'rb') as file:
+                data = file.read()
+                client_socket.sendall(data)
+
+        except Exception as e:
+            print(f"Error sending file {file_name} to {client_socket.getpeername()}: {e}")
+
+
+    def receive_file(self, client_socket):
+        try:
+            # Receive the command indicating that a file is being sent
+            command = client_socket.recv(4)
+
+            if command == b'file':
+                # Receive the file name
+                file_name = client_socket.recv(1024).decode('utf-8')
+
+                # Receive the file content
+                with open(file_name, 'wb') as file:
+                    while True:
+                        data = client_socket.recv(1024)
+                        if not data:
+                            break
+                        file.write(data)
+                print(f"File {file_name} received from {client_socket.getpeername()}")
+            else:
+                print(f"Unexpected command received from {client_socket.getpeername()}: {command}")
+
+        except Exception as e:
+            print(f"Error receiving file from {client_socket.getpeername()}: {e}")
