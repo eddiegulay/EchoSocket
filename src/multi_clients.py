@@ -3,12 +3,18 @@ import select
 import threading
 
 class EchoSocket:
-    def __init__(self, server_address, server_port, server_name):
+    def __init__(self, server_address, server_port, server_name, for_clients=False):
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server_socket.bind((server_address, server_port))
-        self.server_socket.listen(5)
+        self.server_address = server_address
+        self.server_port = self.port = server_port
 
-        self.clients = [self.server_socket]
+        if not for_clients:
+            self.server_socket.bind((server_address, server_port))
+            self.server_socket.listen(5)
+            self.clients = [self.server_socket]
+        else:
+            print(f"Continuing as client grand'ma 👵 {server_name}...")
+
         self.running = True
         self.server_name = server_name
 
@@ -65,9 +71,14 @@ class EchoSocket:
                 print(f"Error broadcasting message to {client.getpeername()}: {e}")
                 self.handle_disconnect(client)
 
-    def create_new_client(self, server_address, server_port, client_name=None):
+    def create_new_client(self, server_address=None, server_port=None, client_name=None):
         if client_name is None:
-            client_name = "Client"
+            client_name = self.server_name
+
+        # inherit the server address and port from the server
+        if server_address is None:
+            server_address = self.server_address
+            server_port = self.port
 
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client_socket.connect((server_address, server_port))
@@ -90,6 +101,25 @@ class EchoSocket:
             # Receive the response from the server
             response = client_socket.recv(1024).decode('utf-8')
             print(f"{client_name} response: {response}")
+
+        client_socket.close()
+
+    def handle_client(self, client_socket):
+        while True:
+            try:
+                # Receive data from the client
+                data = client_socket.recv(1024).decode('utf-8')
+                if not data:
+                    break
+
+                print(f"Received from client {client_socket.getpeername()}: {data}")
+
+                # Send a response back to the client
+                response = f"{self.server_name} received: {data}"
+                client_socket.send(response.encode('utf-8'))
+            except Exception as e:
+                print(f"Error handling client {client_socket.getpeername()}: {e}")
+                self.handle_disconnect(client_socket)
 
         client_socket.close()
 
