@@ -2,7 +2,7 @@ import socket
 import select
 import threading
 
-class ProbableTwoWay:
+class EchoSocket:
     def __init__(self, server_address, server_port, server_name):
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server_socket.bind((server_address, server_port))
