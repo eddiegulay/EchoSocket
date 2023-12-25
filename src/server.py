@@ -64,8 +64,6 @@ class Server:
         self.clients.remove(disconnected_sock)
         disconnected_sock.close()
 
-        # Inform other clients about the disconnection
-        self.broadcast(f"Client {disconnected_sock.getpeername()} has disconnected.")
 
     def broadcast(self, message):
         for client in self.clients:
