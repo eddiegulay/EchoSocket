@@ -67,11 +67,11 @@ EchoSocket/
 |-- basic/
 |   |-- client.py
 |   |-- server.py
+|   |-- multi_clients.py
+|   |-- single_action.py
 |-- master.py
 |-- slave.py
 |-- src/
-|   |-- multi_clients.py
-|   |-- single_action.py
 |-- .gitignore
 |-- README.md
 |-- (other project files)
