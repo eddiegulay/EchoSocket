@@ -1,8 +1,6 @@
 # slave.py
 # this is where you create slave servers
 from src.multi_clients import EchoSocket
-from src.file_server import FileServer
-from src.echo import BaseServer, TextServer
 
 SERVER_IP = "127.0.0.1"  # localhost
 SERVER_PORT = 8080  # port number
