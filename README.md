@@ -28,10 +28,6 @@ This is EchoSocket, a project that facilitates two-way communication between a s
 
 ## Features
 
-Certainly! Here's a concise README content focusing on the mentioned points (1, 2, and 4):
-
----
-
 ## Features
 
 1. **Simple Two-Way Communication:**
@@ -124,7 +120,7 @@ EchoSocket/
        master.register_task_function('reverse', reverse_string_task)
       
       # you can register as many functions as you can
-      
+
        # Run the server
        master.run()
    ```
