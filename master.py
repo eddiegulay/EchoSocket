@@ -1,6 +1,8 @@
 # master.py
 # this is your server file
 from src.multi_clients import EchoSocket
+from src.file_server import FileServer
+
 
 SERVER_IP = "127.0.0.1" # localhost
 SERVER_PORT = 8080 # port number
@@ -9,7 +11,7 @@ SERVER_NAME = "MasterServer" # server name
 
 def main():
     # Create an instance of EchoSocket
-    server = EchoSocket(SERVER_IP, SERVER_PORT, SERVER_NAME)
+    server = FileServer(SERVER_IP, SERVER_PORT, SERVER_NAME)
 
     try:
         # Start the server

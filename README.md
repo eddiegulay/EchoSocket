@@ -3,6 +3,11 @@
 
 Welcome to EchoSocket, a project that facilitates two-way communication between a server and multiple clients. This project provides a basic framework for building applications that involve networking and communication.
 
+<!-- project image -->
+<p align="center">
+  <img src="assets/echoSocket.jpg" alt="EchoSocket" width="500" />
+</p>
+
 ## Table of Contents
 
 - [EchoSocket](#echosocket)

@@ -1,6 +1,7 @@
 # slave.py
 # this is where you create slave servers
 from src.multi_clients import EchoSocket
+from src.file_server import FileServer
 
 SERVER_IP = "127.0.0.1"  # localhost
 SERVER_PORT = 8080  # port number
@@ -13,6 +14,7 @@ def main():
     # create a slave server / client
     client_instance = app.create_new_client()
     app.start_client(client_instance, client_name="Django Unchained")
+
 
 if __name__ == "__main__":
     main()
