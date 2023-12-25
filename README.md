@@ -1,7 +1,6 @@
 # EchoSocket
 
-
-Welcome to EchoSocket, a project that facilitates two-way communication between a server and multiple clients. This project provides a basic framework for building applications that involve networking and communication.
+This is EchoSocket, a project that facilitates two-way communication between a server and multiple clients. All in the look for faster realtime server-client communication.
 
 <!-- project image -->
 <p align="center">
