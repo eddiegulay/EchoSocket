@@ -12,7 +12,6 @@ This is EchoSocket, a project that facilitates two-way communication between a s
 - [EchoSocket](#echosocket)
   - [Table of Contents](#table-of-contents)
   - [Features](#features)
-  - [Features](#features-1)
   - [Getting Started](#getting-started)
     - [Prerequisites](#prerequisites)
     - [Installation](#installation)
@@ -28,7 +27,6 @@ This is EchoSocket, a project that facilitates two-way communication between a s
 
 ## Features
 
-## Features
 
 1. **Simple Two-Way Communication:**
    - Enables real-time communication between a master server and multiple clients.
