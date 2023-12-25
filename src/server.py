@@ -64,7 +64,9 @@ class Server:
                     break
 
             except Exception as e:
-                self.handle_disconnect(client_socket)
+                response = f"Problem: {e}"
+                client_socket.send(response.encode('utf-8'))
+                # self.handle_disconnect(client_socket)
                 break
 
     def handle_disconnect(self, disconnected_sock):

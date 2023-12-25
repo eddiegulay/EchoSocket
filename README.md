@@ -21,6 +21,10 @@ This is EchoSocket, a project that facilitates two-way communication between a s
   - [Using EchoSocket](#using-echosocket)
     - [Server Setup](#server-setup)
     - [Client Interaction](#client-interaction)
+  - [Examples](#examples)
+    - [Reverse Shell](#reverse-shell)
+      - [Running the Example](#running-the-example)
+      - [Available Commands](#available-commands)
 
 ## Features
 
@@ -118,7 +122,9 @@ EchoSocket/
 
        # Register task functions
        master.register_task_function('reverse', reverse_string_task)
-
+      
+      # you can register as many functions as you can
+      
        # Run the server
        master.run()
    ```
@@ -163,3 +169,35 @@ EchoSocket/
    ```bash
    python slave.py
    ```
+
+## Examples
+
+### Reverse Shell
+
+EchoSocket can be used to create a simple reverse shell. In this example, we have a master server (`reverse_shell_portal.py`) and a portal client (`reverse_shell_portal.py`). The portal allows an attacker to send commands to the server and receive the output.
+
+#### Running the Example
+
+1. Start the master server:
+
+   ```bash
+   python master.py
+   ```
+
+2. Run the worm script to initiate the server:
+
+   ```bash
+   python reverse_shell_worm.py
+   ```
+
+3. Run the reverse shell portal to interact with the server:
+
+   ```bash
+   python reverse_shell_portal.py
+   ```
+
+   You can now enter commands in the portal, and the server will execute them, sending back the output.
+
+#### Available Commands
+the demo function does not work with commands that do not return a value. 
+You can make a custom function to handle commands that do not return a value.
