@@ -16,4 +16,7 @@ if __name__ == "__main__":
         response = slave.client_socket.recv(1024).decode('utf-8')
         print(f"Output: {response}")
 
+    # kill the server
+    slave.send_task('exit', '')
+
     slave.close_client()

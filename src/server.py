@@ -39,8 +39,6 @@ class Server:
                     self.handle_disconnect(client_socket)
                     break
 
-                print(f"Received from client {client_socket.getpeername()}: {data}")
-
                 # Deserialize the JSON message
                 message = json.loads(data)
 
@@ -48,14 +46,24 @@ class Server:
                 task_key = message.get("task_key", "")
                 task_data = message.get("task_data", "")
 
-                # Process the task based on the task key
-                task_function = self.task_functions.get(task_key, self.default_task_function)
-                response = task_function(task_data)
+                if task_key.strip() == "exit":
+                    self.close_server()
+                    break
 
-                # Send the response back to the client
-                client_socket.send(response.encode('utf-8'))
+                print(f"Running task {task_key} from {client_socket.getpeername()}")
+                # Process the task based on the task key
+                try:
+                    task_function = self.task_functions.get(task_key, self.default_task_function)
+                    response = task_function(task_data)
+                    # Send the response back to the client
+                    client_socket.send(response.encode('utf-8'))
+                except Exception as e:
+                    response = f"Failed to process task {task_key}, try to register the task function\n"
+                    response += f"Available task keys: {list(self.task_functions.keys())}"
+                    client_socket.send(response.encode('utf-8'))
+                    break
+
             except Exception as e:
-                # print(f"Error handling data from client {client_socket.getpeername()}: {e}")
                 self.handle_disconnect(client_socket)
                 break
 
@@ -91,13 +99,6 @@ class Server:
     def close_server(self):
         print("Closing the server...")
         self.running = False
-
-        # Close all client connections
-        for client in self.clients:
-            try:
-                client.close()
-            except Exception as e:
-                print(f"Error closing client connection {client.getpeername()}: {e}")
 
         # Close the server socket
         try:
