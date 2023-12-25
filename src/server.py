@@ -55,7 +55,7 @@ class Server:
                 # Send the response back to the client
                 client_socket.send(response.encode('utf-8'))
             except Exception as e:
-                print(f"Error handling data from client {client_socket.getpeername()}: {e}")
+                # print(f"Error handling data from client {client_socket.getpeername()}: {e}")
                 self.handle_disconnect(client_socket)
                 break
 
@@ -106,7 +106,3 @@ class Server:
             self.server_socket.close()
         except Exception as e:
             print(f"Error closing server socket: {e}")
-
-if __name__ == "__main__":
-    app = Server("127.0.0.1", 8080, "Server")
-    app.run()

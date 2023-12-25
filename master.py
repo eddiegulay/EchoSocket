@@ -1,16 +1,13 @@
 # master.py
-# this is your server file
-from src.multi_clients import EchoSocket
+from src.server import Server
 
-
-SERVER_IP = "127.0.0.1" # localhost
-SERVER_PORT = 8080 # port number
-SERVER_NAME = "MasterServer" # server name
-
-
-def main():
-    text_server = EchoSocket("127.0.0.1", 8080, "MasterServer")
-    text_server.run()
+def reverse_string_task(data):
+    return data[::-1]
 
 if __name__ == "__main__":
-    main()
+    master = Server("127.0.0.1", 8080, "Master")
+
+    # Register the reverse_string_task function with key 'reverse'
+    master.register_task_function('reverse', reverse_string_task)
+
+    master.run()

@@ -1,18 +1,19 @@
 # slave.py
-# this is where you create slave servers
-from src.multi_clients import EchoSocket
-
-SERVER_IP = "127.0.0.1"  # localhost
-SERVER_PORT = 8080  # port number
-SERVER_NAME = "MasterServer"  # server name (does not have to be the same as master.py)
-
-def main():
-    # Create an instance of EchoSocket for the server
-    app = EchoSocket(SERVER_IP, SERVER_PORT, SERVER_NAME, for_clients=True)
-
-    # Create a slave client
-    client_instance = app.create_new_client()
-    app.start_client(client_instance, client_name="SlaveClient")
+from src.client import Client
 
 if __name__ == "__main__":
-    main()
+    slave = Client("127.0.0.1", 8080, "Slave")
+
+    # Send a task to reverse the given string
+    while True:
+        string = input("Enter a string to reverse: ")
+        if string.lower() == 'exit':
+            break
+
+        slave.send_task('reverse', string)
+
+        # Wait for the response from the server
+        response = slave.client_socket.recv(1024).decode('utf-8')
+        print(f"Output: {response}")
+
+    slave.close_client()

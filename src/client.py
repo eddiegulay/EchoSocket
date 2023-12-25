@@ -41,8 +41,3 @@ class Client:
             self.client_socket.close()
         except Exception as e:
             print(f"Error closing client socket: {e}")
-
-if __name__ == "__main__":
-    client = Client("127.0.0.1", 8080, "Client")
-    client.start_client()
-    client.close_client()
