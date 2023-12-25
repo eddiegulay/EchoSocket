@@ -12,22 +12,35 @@ This is EchoSocket, a project that facilitates two-way communication between a s
 - [EchoSocket](#echosocket)
   - [Table of Contents](#table-of-contents)
   - [Features](#features)
+  - [Features](#features-1)
   - [Getting Started](#getting-started)
     - [Prerequisites](#prerequisites)
     - [Installation](#installation)
   - [Usage](#usage)
   - [Project Structure](#project-structure)
-  - [EchoSocket: Master-Slave Connection](#echosocket-master-slave-connection)
-  - [Interacting with the System](#interacting-with-the-system)
-    - [Notes](#notes)
-  - [Contributing](#contributing)
-  - [License](#license)
+  - [Using EchoSocket](#using-echosocket)
+    - [Server Setup](#server-setup)
+    - [Client Interaction](#client-interaction)
 
 ## Features
 
-- Simple two-way communication between a server and multiple clients.
-- Easy-to-use Python scripts for both the server and client components.
-- Support for handling multiple client connections simultaneously.
+Certainly! Here's a concise README content focusing on the mentioned points (1, 2, and 4):
+
+---
+
+## Features
+
+1. **Simple Two-Way Communication:**
+   - Enables real-time communication between a master server and multiple clients.
+   - Clients can send and receive messages seamlessly, fostering efficient interactions.
+
+2. **Modular Task Execution:**
+   - Register custom task functions on the server for dynamic execution.
+   - Clients submit tasks, and the server executes corresponding functions, allowing for easy extensibility.
+
+3. **Graceful Server Shutdown:**
+   - Ensures a controlled termination process upon server shutdown requests.
+   - Closes client connections gracefully, maintaining stability in the system.
 
 ## Getting Started
 
@@ -72,75 +85,81 @@ EchoSocket/
 |-- master.py
 |-- slave.py
 |-- src/
+|   |-- client.py
+|   |-- server.py
 |-- .gitignore
 |-- README.md
 |-- (other project files)
 ```
 
 - **basic:** Contains basic client and server scripts.
-- **src:** Contains more advanced scripts for handling multiple clients.
+- **src:** Contains more advanced scripts for handling multiple clients. (The actual project)
 - **master.py:** Where the server script is located.
 - **slave.py:** Where the client script is located.
 
----
-Certainly! Here's a simple README for creating connections between a master server and slave clients using the `EchoSocket` class in `multi_clients.py`:
+## Using EchoSocket
 
----
+### Server Setup
 
-## EchoSocket: Master-Slave Connection
+1. **Create Server Instance:**
 
-1. **Run the Master Server:**
+   In your `master.py` file, create an instance of the server and define your custom task functions.
 
-    - Open `master.py` and customize the following variables:
+   ```python
+   # master.py
+   from src.server import Server
 
-        ```python
-        SERVER_IP = "127.0.0.1"  # Set the server IP address
-        SERVER_PORT = 8080       # Set the server port
-        SERVER_NAME = "MasterServer"  # Set the server name
-        ```
+   def reverse_string_task(data):
+       return data[::-1]
 
-    - Run the master server:
+   if __name__ == "__main__":
+       # Create a server instance
+       master = Server("127.0.0.1", 8080, "Master")
 
-        ```bash
-        python master.py
-        ```
+       # Register task functions
+       master.register_task_function('reverse', reverse_string_task)
 
-2. **Run the Slave Client:**
+       # Run the server
+       master.run()
+   ```
 
-    - Open `slave.py` and customize the following variables:
+2. **Run the Master Server:**
 
-        ```python
-        SERVER_IP = "127.0.0.1"  # Set the server IP address
-        SERVER_PORT = 8080       # Set the server port
-        SERVER_NAME = "MasterServer"  # Set the server name (should match the master)
-        ```
+   Execute the `master.py` script to start the master server.
 
-    - Run the slave client:
+   ```bash
+   python master.py
+   ```
 
-        ```bash
-        python slave.py
-        ```
+### Client Interaction
 
-## Interacting with the System
+3. **Start a Slave Client:**
 
-- Once the master server and slave clients are running, the master server will accept incoming connections from slaves.
+   In your `slave.py` file, create an instance of the client and send a task.
 
-- Slave clients can send messages to the master server, and the server will respond by echoing the received messages.
+   ```python
+   # slave.py
+   from src.client import Client
 
-- To gracefully exit the system, type `'exit'` as a message in a slave client.
+   if __name__ == "__main__":
+       # Create a client instance
+       slave = Client("127.0.0.1", 8080, "Slave")
 
-### Notes
+       # Send a task to reverse a string
+       slave.send_task('reverse', 'Hello, EchoSocket!')
 
-- The master and slave instances of `EchoSocket` are designed to be flexible, allowing for easy customization of server IP, port, and name.
+       # Wait for the response from the server
+       response = slave.client_socket.recv(1024).decode('utf-8')
+       print(f"Reversed Output: {response}")
 
-- The system uses a simple echo mechanism where the server responds with an echo of the received message.
+       # Close the client connection
+       slave.close_client()
+   ```
 
----
+4. **Run the Slave Client:**
 
-## Contributing
+   Execute the `slave.py` script to start the slave client.
 
-Contributions are welcome! just fork and have fun!
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
+   ```bash
+   python slave.py
+   ```
