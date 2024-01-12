@@ -20,10 +20,6 @@ This is EchoSocket, a project that facilitates two-way communication between a s
   - [Using EchoSocket](#using-echosocket)
     - [Server Setup](#server-setup)
     - [Client Interaction](#client-interaction)
-  - [Examples](#examples)
-    - [Reverse Shell](#reverse-shell)
-      - [Running the Example](#running-the-example)
-      - [Available Commands](#available-commands)
 
 ## Features
 
@@ -85,15 +81,20 @@ EchoSocket/
 |-- src/
 |   |-- client.py
 |   |-- server.py
+|-- |-- jobs.py
+|-- assets/
+|   |-- echoSocket.jpg
+|-- LICENSE
 |-- .gitignore
 |-- README.md
-|-- (other project files)
+|-- *_server.py*
+|-- *_client.py*
 ```
 
 - **basic:** Contains basic client and server scripts.
-- **src:** Contains more advanced scripts for handling multiple clients. (The actual project)
-- **master.py:** Where the server script is located.
-- **slave.py:** Where the client script is located.
+- **src:** Contains server and client classes plus server jobs (The actual project)
+- **_server.py:** Where the server script is located.
+- **_client.py:** Where the client script is located.
 
 ## Using EchoSocket
 
@@ -101,14 +102,13 @@ EchoSocket/
 
 1. **Create Server Instance:**
 
-   In your `master.py` file, create an instance of the server and define your custom task functions.
+   In your `_server.py` file, create an instance of the server and define your custom task functions.
 
    ```python
-   # master.py
+   # _server.py
    from src.server import Server
+   from src.jobs import reverse_string_task
 
-   def reverse_string_task(data):
-       return data[::-1]
 
    if __name__ == "__main__":
        # Create a server instance
@@ -116,7 +116,7 @@ EchoSocket/
 
        # Register task functions
        master.register_task_function('reverse', reverse_string_task)
-      
+
       # you can register as many functions as you can
 
        # Run the server
@@ -125,73 +125,41 @@ EchoSocket/
 
 2. **Run the Master Server:**
 
-   Execute the `master.py` script to start the master server.
+   Execute the `_server.py` script to start the master server.
 
    ```bash
-   python master.py
+   python _server.py
    ```
 
 ### Client Interaction
 
 3. **Start a Slave Client:**
 
-   In your `slave.py` file, create an instance of the client and send a task.
+   In your `_client.py` file, create an instance of the client and send a task.
 
    ```python
-   # slave.py
+   # _client.py
    from src.client import Client
 
    if __name__ == "__main__":
        # Create a client instance
-       slave = Client("127.0.0.1", 8080, "Slave")
+       client = Client("127.0.0.1", 8080, "The Client")
 
        # Send a task to reverse a string
-       slave.send_task('reverse', 'Hello, EchoSocket!')
+       client.send_task('reverse', 'Hello, EchoSocket!')
 
        # Wait for the response from the server
-       response = slave.client_socket.recv(1024).decode('utf-8')
+       response = client.client_socket.recv(1024).decode('utf-8')
        print(f"Reversed Output: {response}")
 
        # Close the client connection
-       slave.close_client()
+       client.close_client()
    ```
 
-4. **Run the Slave Client:**
+4. **Run the Client:**
 
-   Execute the `slave.py` script to start the slave client.
+   Execute the `_client.py` script to start the slave client.
 
    ```bash
-   python slave.py
+   python _client.py
    ```
-
-## Examples
-
-### Reverse Shell
-
-EchoSocket can be used to create a simple reverse shell. In this example, we have a master server (`reverse_shell_portal.py`) and a portal client (`reverse_shell_portal.py`). The portal allows an attacker to send commands to the server and receive the output.
-
-#### Running the Example
-
-1. Start the master server:
-
-   ```bash
-   python master.py
-   ```
-
-2. Run the worm script to initiate the server:
-
-   ```bash
-   python reverse_shell_worm.py
-   ```
-
-3. Run the reverse shell portal to interact with the server:
-
-   ```bash
-   python reverse_shell_portal.py
-   ```
-
-   You can now enter commands in the portal, and the server will execute them, sending back the output.
-
-#### Available Commands
-the demo function does not work with commands that do not return a value. 
-You can make a custom function to handle commands that do not return a value.

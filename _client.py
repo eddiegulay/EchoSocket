@@ -18,6 +18,14 @@ if __name__ == "__main__":
             # Send a task to execute the command on the server
             slave.send_task('execute', command.split()[1])
 
+        elif command.lower().startswith('draw'):
+            # Send a task to draw a shape
+            slave.send_task('draw', command.split()[1])
+
+        elif command.lower().startswith('mv'):
+            # Send a task to move the turtle
+            slave.send_task('mv', command.split()[1])
+
         else:
             print("We don't support that command yet.")
             continue

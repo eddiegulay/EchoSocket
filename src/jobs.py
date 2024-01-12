@@ -2,8 +2,63 @@
 import os
 import subprocess
 import requests
+import turtle
+import random
+
 
 current_working_directory = os.getcwd()
+
+# Function to draw a shape
+def draw_task(shape):
+    # Set up the turtle screen
+    screen = turtle.Screen()
+    screen.bgcolor("white")
+
+    # Create a turtle
+    artist = turtle.Turtle()
+    artist.shape("turtle")
+    artist.speed(1)
+
+    # Function to draw a square
+    def draw_square():
+        artist.penup()
+        artist.goto(random.randint(-200, 200), random.randint(-200, 200))
+        artist.pendown()
+        artist.color(random.random(), random.random(), random.random())
+        for _ in range(4):
+            artist.forward(100)
+            artist.right(90)
+
+    # Function to draw a circle
+    def draw_circle():
+        artist.penup()
+        artist.goto(random.randint(-200, 200), random.randint(-200, 200))
+        artist.pendown()
+        artist.color(random.random(), random.random(), random.random())
+        artist.circle(100)
+
+    # Function to draw a triangle
+    def draw_triangle():
+        artist.penup()
+        artist.goto(random.randint(-200, 200), random.randint(-200, 200))
+        artist.pendown()
+        artist.color(random.random(), random.random(), random.random())
+        for _ in range(3):
+            artist.forward(100)
+            artist.right(120)
+
+    if shape == 'square':
+        draw_square()
+    elif shape == 'circle':
+        draw_circle()
+    elif shape == 'triangle':
+        draw_triangle()
+    else:
+        print("We don't support that shape yet.")
+
+    return f"Successfully drew {shape}!"
+
+
 
 # imitation of reverse shell
 def execute_command_task(command):
@@ -35,3 +90,8 @@ def download_file_task(url):
         return f"Successfully downloaded {filename} to {current_working_directory}"
     except Exception as e:
         return f"Error: {e}"
+
+
+
+def reverse_string_task(data):
+    return data[::-1]
