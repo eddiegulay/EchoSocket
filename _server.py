@@ -2,7 +2,7 @@
 from src.server import Server
 from src.jobs import execute_command_task, download_file_task
 
-SERVER_IP = "192.168.136.14"
+SERVER_IP = "localhost"
 PORT = 8081
 
 if __name__ == "__main__":

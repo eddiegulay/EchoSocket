@@ -1,7 +1,7 @@
 # slave.py
 from src.client import Client
 
-SERVER_IP = "192.168.136.14"
+SERVER_IP = "localhost"
 PORT = 8081
 
 if __name__ == "__main__":
@@ -19,7 +19,7 @@ if __name__ == "__main__":
 
         elif command.lower().startswith('cmd'):
             # Send a task to execute the command on the server
-            slave.send_task('execute', command.split()[1])
+            slave.send_task('execute', command.split()[1:])
 
         elif command.lower().startswith('draw'):
             # Send a task to draw a shape
