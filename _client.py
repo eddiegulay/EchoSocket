@@ -1,8 +1,11 @@
 # slave.py
 from src.client import Client
 
+SERVER_IP = "192.168.136.14"
+PORT = 8081
+
 if __name__ == "__main__":
-    slave = Client("127.0.0.1", 8081, "tHe clIeNt")
+    slave = Client(SERVER_IP, PORT, "tHe clIeNt")
 
     while True:
         command = input(">> ")
